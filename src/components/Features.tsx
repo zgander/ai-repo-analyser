@@ -44,9 +44,8 @@ const FeatureItem = ({ feature, index }: { feature: { title: string; description
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className={`flex flex-col md:flex-row items-center justify-between w-full max-w-5xl mx-auto gap-8 py-10 ${
-        isEven ? 'md:flex-row' : 'md:flex-row-reverse'
-      }`}
+      className={`flex flex-col md:flex-row items-center justify-between w-full max-w-5xl mx-auto gap-8 py-10 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'
+        }`}
     >
       <div className="w-full md:w-1/2 flex flex-col items-start px-6 space-y-4">
         <div className="p-4 rounded-full bg-border/50 backdrop-blur-sm border border-border/80 shadow-md">
@@ -68,10 +67,10 @@ const FeatureItem = ({ feature, index }: { feature: { title: string; description
           {/* A faux UI card representing the feature */}
           <div className="absolute inset-0 bg-black/40 mix-blend-overlay"></div>
           <div className="z-10 animate-pulse bg-white/5 w-3/4 h-2/3 rounded border border-white/10 shadow-inner flex flex-col p-4 space-y-3">
-             <div className="w-1/3 h-4 bg-white/20 rounded"></div>
-             <div className="w-full h-8 bg-white/10 rounded"></div>
-             <div className="w-2/3 h-4 bg-white/10 rounded"></div>
-             <div className="w-full h-4 bg-white/10 rounded"></div>
+            <div className="w-1/3 h-4 bg-white/20 rounded"></div>
+            <div className="w-full h-8 bg-white/10 rounded"></div>
+            <div className="w-2/3 h-4 bg-white/10 rounded"></div>
+            <div className="w-full h-4 bg-white/10 rounded"></div>
           </div>
         </motion.div>
       </div>

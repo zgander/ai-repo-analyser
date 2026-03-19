@@ -15,18 +15,18 @@ export default function Hero() {
   const handleMouseMove = (e: MouseEvent<HTMLElement>) => {
     const { currentTarget, clientX, clientY } = e;
     const { left, top } = currentTarget.getBoundingClientRect();
-    
+
     mouseX.set(clientX - left);
     mouseY.set(clientY - top);
   };
 
   return (
-    <section 
+    <section
       onMouseMove={handleMouseMove}
       className="relative w-full mx-auto px-6 pt-32 pb-24 flex flex-col items-center text-center overflow-hidden min-h-screen justify-center"
     >
       {/* Dynamic Background glowing cursor tracking */}
-      <motion.div 
+      <motion.div
         className="pointer-events-none absolute inset-0 -z-10"
         style={{ background }}
       />
@@ -65,7 +65,7 @@ export default function Hero() {
           <span>Connect GitHub</span>
         </button>
 
-        <button 
+        <button
           onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
           className="group flex items-center justify-center gap-2 px-8 py-3.5 bg-transparent text-primary font-medium rounded-full border border-border hover:bg-border/50 hover:border-muted/30 transition-all duration-300 sm:w-auto w-full"
         >
