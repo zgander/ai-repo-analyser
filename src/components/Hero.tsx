@@ -2,10 +2,27 @@
 import type { MouseEvent } from 'react';
 import { motion, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
 import { Github, ArrowRight, ChevronDown } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+
+const CLIENT_ID = import.meta.env.VITE_GITHUB_CLIENT_ID ?? '';
+const REDIRECT_URI = `${window.location.origin}/auth/callback`;
+
+function buildGitHubOAuthURL() {
+  const params = new URLSearchParams({
+    client_id: CLIENT_ID,
+    redirect_uri: REDIRECT_URI,
+    scope: 'repo read:user',
+  });
+  return `https://github.com/login/oauth/authorize?${params.toString()}`;
+}
 
 export default function Hero() {
-  const mouseX = useMotionValue(typeof window !== "undefined" ? window.innerWidth / 2 : 500);
-  const mouseY = useMotionValue(typeof window !== "undefined" ? window.innerHeight / 2 : 500);
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+
+  const mouseX = useMotionValue(typeof window !== 'undefined' ? window.innerWidth / 2 : 500);
+  const mouseY = useMotionValue(typeof window !== 'undefined' ? window.innerHeight / 2 : 500);
 
   const smoothX = useSpring(mouseX, { damping: 30, stiffness: 200, mass: 0.5 });
   const smoothY = useSpring(mouseY, { damping: 30, stiffness: 200, mass: 0.5 });
@@ -15,9 +32,16 @@ export default function Hero() {
   const handleMouseMove = (e: MouseEvent<HTMLElement>) => {
     const { currentTarget, clientX, clientY } = e;
     const { left, top } = currentTarget.getBoundingClientRect();
-
     mouseX.set(clientX - left);
     mouseY.set(clientY - top);
+  };
+
+  const handleConnectGitHub = () => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    } else {
+      window.location.href = buildGitHubOAuthURL();
+    }
   };
 
   return (
@@ -34,7 +58,7 @@ export default function Hero() {
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
         className="max-w-4xl"
       >
         <h1 className="text-5xl md:text-7xl font-bold tracking-tight bg-clip-text from-primary to-muted leading-tight mb-8">
@@ -46,23 +70,28 @@ export default function Hero() {
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
+        transition={{ duration: 0.8, delay: 0.15, ease: 'easeOut' }}
         className="max-w-2xl"
       >
         <p className="text-lg md:text-xl text-muted leading-relaxed mb-10">
-          Analyze your projects, and get step-by-step fixes — all in one place. Connect your GitHub, improve your projects, and learn as you build.
+          Analyze your projects, and get step-by-step fixes — all in one place.
+          Connect your GitHub, improve your projects, and learn as you build.
         </p>
       </motion.div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+        transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
         className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full"
       >
-        <button className="group relative flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-background font-semibold rounded-full hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] sm:w-auto w-full">
+        <button
+          id="connect-github-btn"
+          onClick={handleConnectGitHub}
+          className="group relative flex items-center justify-center gap-2 px-8 py-3.5 bg-primary text-background font-semibold rounded-full hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] sm:w-auto w-full"
+        >
           <Github className="w-5 h-5" />
-          <span>Connect GitHub</span>
+          <span>{isAuthenticated ? 'Go to Dashboard' : 'Connect GitHub'}</span>
         </button>
 
         <button
